@@ -2,6 +2,10 @@
 
 @section('title', 'Page Title')
 
+@section('sidebar')
+
+@endsection
+
 @section('content')
   <h1>{{trans('db.models.inquiry')}}詳細</h1>
 
@@ -26,7 +30,7 @@
       </form>
     @endif
 
-    @if ($inquiry->status === '未対応')
+    @if ($inquiry->status !== '対応中')
       <form action="{{ route('inquiries.update', ['id' => $inquiry->id]) }}" method="post">
         {{ csrf_field() }}
         @method('PATCH')
@@ -35,7 +39,7 @@
       </form>
     @endif
 
-    @if ($inquiry->status === '対応中')
+    @if ($inquiry->status !== '対応済')
       <form action="{{ route('inquiries.update', ['id' => $inquiry->id]) }}" method="post">
         {{ csrf_field() }}
         @method('PATCH')
@@ -48,44 +52,40 @@
   <table class="table table-hover">
     <tbody>
       <tr>
-        <th class="text-nowrap">{{ trans('db.inquiry.created_at') }}</th>
-        <td>{{ $inquiry->created_at }}</td>
+        <th class="text-nowrap">{{ trans('db.inquiry.created_at') }}
+        <td>{{ $inquiry->created_at }}
       </tr>
       <tr>
-        <th class="text-nowrap">{{ trans('db.inquiry.status') }}</th>
-        <td>{{ $inquiry->status }}</td>
+        <th class="text-nowrap">{{ trans('db.inquiry.status') }}
+        <td>{{ $inquiry->status }}
       </tr>
       <tr>
-        <th class="text-nowrap">{{ trans('db.inquiry.staff') }}</th>
-        <td>{{ $inquiry->staff ? $inquiry->staff->name : '' }}</td>
+        <th class="text-nowrap">{{ trans('db.inquiry.staff') }}
+        <td>{{ $inquiry->staff ? $inquiry->staff->name : '' }}
       </tr>
       <tr>
-        <th class="text-nowrap">{{ trans('db.inquiry.updated_at') }}</th>
-        <td>
-          @if ($inquiry->status !== '未対応')
-            {{ $inquiry->updated_at }}
-          @endif
-        </td>
+        <th class="text-nowrap">{{ trans('db.inquiry.updated_at') }}
+        <td>{{ $inquiry->updated_at }}
       </tr>
       <tr>
-        <th class="text-nowrap">{{ trans('db.inquiry.name') }}</th>
-        <td>{{ $inquiry->name }}</td>
+        <th class="text-nowrap">{{ trans('db.inquiry.name') }}
+        <td>{{ $inquiry->name }}
       </tr>
       <tr>
-        <th class="text-nowrap">{{ trans('db.inquiry.email') }}</th>
-        <td>{{ $inquiry->email }}</td>
+        <th class="text-nowrap">{{ trans('db.inquiry.email') }}
+        <td>{{ $inquiry->email }}
       </tr>
       <tr>
-        <th class="text-nowrap">{{ trans('db.inquiry.phone_number') }}</th>
-        <td>{{ $inquiry->phone_number }}</td>
+        <th class="text-nowrap">{{ trans('db.inquiry.phone_number') }}
+        <td>{{ $inquiry->phone_number }}
       </tr>
       <tr>
-        <th class="text-nowrap">{{ trans('db.inquiry.product_type') }}</th>
-        <td>{{ $inquiry->product_type }}</td>
+        <th class="text-nowrap">{{ trans('db.inquiry.product_type') }}
+        <td>{{ $inquiry->product_type }}
       </tr>
       <tr>
-        <th class="text-nowrap">{{ trans('db.inquiry.content') }}</th>
-        <td>{{ $inquiry->content }}</td>
+        <th class="text-nowrap">{{ trans('db.inquiry.content') }}
+        <td>{{ $inquiry->content }}
       </tr>
     </tbody>
   </table>

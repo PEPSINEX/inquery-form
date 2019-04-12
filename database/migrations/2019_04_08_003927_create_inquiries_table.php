@@ -17,10 +17,10 @@ class CreateInquiriesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 16)->index();
             $table->string('email', 200)->index();
-            $table->string('phone_number', 12);
+            $table->string('phone_number', 13);
             $table->string('product_type', 4);
-            $table->string('content', 200);
-            $table->string('status')->default(00);
+            $table->string('content', 2000);
+            $table->string('status')->default('00');
             $table->bigInteger('staff_id')->unsigned()->nullable(); # incrementsに型を合わせるために必要
             $table->foreign('staff_id')->references('id')->on('staffs'); # 外部キー参照
             $table->timestamps();

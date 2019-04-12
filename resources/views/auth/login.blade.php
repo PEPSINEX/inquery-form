@@ -2,10 +2,6 @@
 
 @section('title', 'Page Title')
 
-@section('header')
-    @include('layouts.header')
-@endsection
-
 @section('sidebar')
     <!-- <p>ここはメインのサイドバーに追加される</p> -->
 @endsection
@@ -40,6 +36,10 @@
     </div>
     <div class="actions">
       <input type="submit" name="action" value="ログイン" class="btn btn-primary" data-disable-with="ログイン">
+    </div>
+
+    <div class="actions">
+      <a href="{{ action('Auth\ForgotPasswordController@showLinkRequestForm') }}">パスワードリセット</a></li>
     </div>
   </form>
   </body>

@@ -11,7 +11,7 @@
       <!-- css -->
       <link rel="stylesheet" href="{{ asset('/resources/sass/app.scss') }}">
         @section('header')
-            <!-- ここがメインのサイドバー -->
+            @include('layouts.header')
         @show
 
         @section('sidebar')

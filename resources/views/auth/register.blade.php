@@ -2,10 +2,6 @@
 
 @section('title', 'Page Title')
 
-@section('header')
-    @include('layouts.header')
-@endsection
-
 @section('sidebar')
     <!-- <p>ここはメインのサイドバーに追加される</p> -->
 @endsection

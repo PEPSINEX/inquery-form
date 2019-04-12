@@ -6,33 +6,71 @@ use Illuminate\Database\Eloquent\Model;
 
 class Inquiry extends Model
 {
-    const PRODUCT_TYPES = [
-        // $this->get_product_types(16);
-        'A001', 'A002', 'A003', 'A004', 'A005', 'A006', 'A007', 'A008', 'A009', 'A010', 'A011', 'A012', 'A013', 'A014', 'A015', 'A016'
-    ];
-
-    // private function get_product_types(Integer $number)
-    // {
-    //     for ($i = 1; $i <= $number; $i++)
-    //     {
-    //         $num = sprintf("%02d", $i);
-    //         return 'A0'.$num;   
-    //     }
-    // }
-
-    /**
-     * この問い合わせを所有するStaffを取得
-     */
+    // リレーション設定
     public function staff()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'staff_id');
     }
 
-    /**
-     * ユーザーに関連する返答を取得
-     */
-    public function answer()
+    public function answers()
     {
         return $this->hasMany('App\Answer');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
+    // 複数代入する属性
+    protected $fillable = [
+        'name',
+        'email',
+        'phone_number',
+        'product_type',
+        'content',
+        'status',
+        'staff_id',
+    ];
+
+    // 問い合わせ作成日時取得時のフォーマットを定義
+    public function getCreatedAtAttribute($value)
+    {
+        return date('Y年m月d日 H時i分', strtotime($value));
+    }
+
+    // 問い合わせ更新日時取得時のフォーマットを定義
+    public function getUpdatedAtAttribute($value)
+    {
+        return date('Y年m月d日 H時i分', strtotime($value));
+    }
+
+    // 対応状況のフォーマットを定義
+    public function getStatusAttribute($value)
+    {
+        switch($value)
+        {
+            case '00':
+                return '未対応';
+                break;
+            case '10':
+                return '対応中';
+                break;
+            case '20':
+                return '対応済';
+                break;
+        }
+    }
+
+    // 問い合わせ内容の先頭から{$number}文字を取得
+    public function mbSubstrContent($number)
+    {
+        $content = $this->content;
+        
+        if (mb_strlen($content) > 100) {
+            return mb_substr($this->content, 0, $number, 'utf-8').'...';
+        }else{
+            return $this->content;
+        }
     }
 }

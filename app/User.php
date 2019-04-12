@@ -45,20 +45,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * ユーザーに関連するお問い合わせを取得
-     */
-    public function inquiry()
+    public function inquiries()
     {
-        return $this->hasOne('App\Inquiry');
+        return $this->hasMany('App\Inquiry');
     }
 
-    /**
-     * ユーザーに関連する返答を取得
-     */
-    public function answer()
+    public function answers()
     {
         return $this->hasMany('App\Answer');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
     }
 
     # スタッフ新規登録後、通知メールを送信
