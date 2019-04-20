@@ -60,6 +60,8 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'set.password' => \App\Http\Middleware\SetRandomPassword::class,   //　新規staff登録時のパスワード追加メソッド
+        'check.admin' => \App\Http\Middleware\CheckAdmin::class, //　管理者確認
     ];
 
     /**
