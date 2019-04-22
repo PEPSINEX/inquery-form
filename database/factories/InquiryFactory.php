@@ -1,13 +1,16 @@
 <?php
 
 use Faker\Generator as Faker;
+use App\Product;
 
 $factory->define(App\Inquiry::class, function (Faker $faker) {
+    $product_types = Product::getTypes();
+    $rand_key = array_rand($product_types);
     return [
-        'name' => 'test1',
-        'email' => 'test1@test.com',
-        'phone_number' => '00000000001',
-        'product_type' => 'A001',
-        'content' => '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'phone_number' => $faker->phoneNumber,
+        'product_type' => $product_types[$rand_key],
+        'content' => str_repeat('a', 2000),
     ];
 });

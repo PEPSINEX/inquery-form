@@ -31,18 +31,7 @@
             <td>{{$inquiry->name}}
             <td>{{$inquiry->product_type}}
             <td>{{$inquiry->content}}
-            <td>
-              @switch($inquiry->status)
-                @case(00)
-                  未対応
-                  @break
-                @case(10)
-                  対応中
-                  @break
-                @case(20)
-                  対応済
-                  @break
-              @endswitch 
+            <td>{{$inquiry->status()}}
             <td>{{$inquiry->staff ? $inquiry->staff->name : ''}}
             <td>
               <form action="/inquiries/{{$inquiry->id}}" method="POST">

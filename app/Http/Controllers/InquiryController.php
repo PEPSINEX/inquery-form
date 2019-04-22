@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule; // validationに使用
 use Illuminate\Http\Response;
 use App\Mail\Inquired;  // メール送信機能
 use Illuminate\Support\Facades\Mail;  // メール送信機能
+use App\Product; // Product情報の取得
 
 class InquiryController extends Controller
 {
@@ -25,16 +26,18 @@ class InquiryController extends Controller
     }
     public function create()
     {
-        return view('inquiries.create', ['PRODUCT_TYPES' => Inquiry::PRODUCT_TYPES]);
+        return view('inquiries.create', ['PRODUCT_TYPES' => Product::getTypes()]);
     }
 
     public function store(Request $request): Response
     {
+        $phone_regexp = '/\A(((0(\d{1}[-(]?\d{4}|\d{2}[-(]?\d{3}|\d{3}[-(]?\d{2}|\d{4}[-(]?\d{1}|[5789]0[-(]?\d{4})[-)]?)|\d{1,4}\-?)\d{4}|0120[-(]?\d{3}[-)]?\d{3})\z/';
+
         Validator::make($request->all(), [
             'name'          => ['required', 'max:16'],
             'email'         => ['required', 'max:200', 'email'],
-            'phone_number'  => ['required', 'max:12'],
-            'product_type'  => ['required', 'max:4', Rule::in(Inquiry::PRODUCT_TYPES)],
+            'phone_number'  => ['required', 'max:13', "regex:$phone_regexp"],
+            'product_type'  => ['required', 'max:4', Rule::in(Product::getTypes())],
             'content'       => ['required', 'max:2000']
         ])->validate();
 
