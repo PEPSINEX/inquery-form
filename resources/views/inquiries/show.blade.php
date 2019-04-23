@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-  <h1>お問い合わせ確認</h1>
+  <h1>{{trans('eloquent.models.inquiry')}}詳細</h1>
 
   <!-- バリデーションエラーメッセージの追加 -->
   @if ($errors->any())
@@ -23,24 +23,24 @@
   <table class="table table-hover">
     <tbody>
       <tr>
-        <th>お名前
-        <td>{{$inquiry->name}}
+        <th class="text-nowrap">{{ trans('eloquent.columns.inquiry.name') }}
+        <td>{{ $inquiry->name }}
       </tr>
       <tr>
-        <th>メールアドレス
-        <td>{{$inquiry->email}}
+        <th class="text-nowrap">{{ trans('eloquent.columns.inquiry.email') }}
+        <td>{{ $inquiry->email }}
       </tr>
       <tr>
-        <th>電話番号
-        <td>{{$inquiry->phone_number}}
+        <th class="text-nowrap">{{ trans('eloquent.columns.inquiry.phone_number') }}
+        <td>{{ $inquiry->phone_number }}
       </tr>
       <tr>
-        <th>製品番号
-        <td>{{$inquiry->product_type}}
+        <th class="text-nowrap">{{ trans('eloquent.columns.inquiry.product_type') }}
+        <td>{{ $inquiry->product_type }}
       </tr>
       <tr>
-        <th>お問い合わせ内容
-        <td>{{$inquiry->content}}
+        <th class="text-nowrap">{{ trans('eloquent.columns.inquiry.content') }}
+        <td>{{ $inquiry->content }}
       </tr>
     </tbody>
   </table>
@@ -50,7 +50,7 @@
   <form action="/answers" method="post">
     {{ csrf_field() }}
     <div class="form-group">
-      <label for="answer_content">メール本文</label>
+      <label for="answer_content">{{ trans('eloquent.columns.answer.content') }}</label>
       <textarea class="form-control" cols="40" rows="4" name="content" id="answer_content"></textarea>
     </div>
     <input type="hidden" name="inquiry_id" value="{{ $inquiry->id }}">

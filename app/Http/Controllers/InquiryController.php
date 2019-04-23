@@ -13,17 +13,19 @@ use App\Product; // Product情報の取得
 
 class InquiryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $inquiries = Inquiry::all();
-        return view('inquiries.index', ['inquiries' => $inquiries]);
+        $inquiries = Inquiry::sortCreatedAt('asc');
+        
+        if ($request->query()) {
+            $query = $request->query();
+            $inquiries = $inquiries->findByColumnValue(key($query), $query[key($query)]);
+        }
+        
+        return view('inquiries.index', ['inquiries' => $inquiries->get()]);
 
     }
+    
     public function create()
     {
         return view('inquiries.create', ['PRODUCT_TYPES' => Product::getTypes()]);

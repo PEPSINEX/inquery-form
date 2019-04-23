@@ -14,10 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/auth/login', 'Auth\LoginController@showLoginForm');
+Route::get('/auth/login', 'Auth\LoginController@showLoginForm')->name('login');;
 Route::post('/auth/login', 'Auth\LoginController@login');
-
-Route::resource('inquiries', 'InquiryController');
+Route::resource('inquiries', 'InquiryController')->only([
+    'create'
+]);
 
 Route::group(['middleware' => ['auth', 'can:auth-only']], function () {
     Route::get('/auth/register', 'Auth\RegisterController@showRegistrationForm');
@@ -28,6 +29,9 @@ Route::group(['middleware' => ['auth', 'can:auth-only']], function () {
 });
    
 Route::group(['middleware' => ['auth', 'can:all-staff']], function () {
+    Route::resource('inquiries', 'InquiryController')->except([
+        'create'
+    ]);
     Route::get('/auth/logout', 'Auth\LoginController@logout');
     Route::view('/home', 'home');
     Route::resource('answers', 'AnswerController', ['except' => ['create']]);

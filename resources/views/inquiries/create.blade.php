@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-  <h1>お問い合わせ</h1>
+  <h1>{{trans('eloquent.models.inquiry')}}</h1>
 
   <!-- バリデーションエラーメッセージの追加 -->
   @if ($errors->any())
@@ -27,19 +27,19 @@
   <form action="/inquiries" method="post">
     {{ csrf_field() }}
     <div class="form-group">
-      <label for="inquiry_name">名前</label>
+      <label for="inquiry_name">{{ trans('eloquent.columns.inquiry.name') }}</label>
       <input class="form-control" type="text" value="" name="name" id="inquiry_name" />
     </div>
     <div class="form-group">
-      <label for="inquiry_email">メールアドレス</label>
+      <label for="inquiry_email">{{ trans('eloquent.columns.inquiry.email') }}</label>
       <input class="form-control" type="email" value="" name="email" id="inquiry_email" />
     </div>
     <div class="form-group">
-      <label for="inquiry_phone_number">電話番号</label>
+      <label for="inquiry_phone_number">{{ trans('eloquent.columns.inquiry.phone_number') }}</label>
       <input class="form-control" type="tel" name="phone_number" id="inquiry_phone_number" />
     </div>
     <div class="form-group">
-      <label for="inquiry_product_type">製品番号</label>
+      <label for="inquiry_product_type">{{ trans('eloquent.columns.inquiry.product_type') }}</label>
       <select class="form-control" name="product_type" id="answer_product_type">
         @foreach ($PRODUCT_TYPES as $PRODUCT_TYPE)
           <option value={{ $PRODUCT_TYPE }}>{{ $PRODUCT_TYPE }}</option>
@@ -47,11 +47,11 @@
       </select>
     </div>
     <div class="form-group">
-      <label for="inquiry_content">お問い合わせ内容</label>
+      <label for="inquiry_content">{{ trans('eloquent.columns.inquiry.content') }}</label>
       <textarea class="form-control" cols="40" rows="4" name="content" id="inquiry_content"></textarea>
     </div>
     <div class="actions">
-      <input type="submit" name="commit" value="登録する" class="btn btn-primary" data-disable-with="登録する" />
+      <input type="submit" name="commit" value="送信" class="btn btn-primary" data-disable-with="登録する" />
     </div>
   </form>
 @endsection

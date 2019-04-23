@@ -11,6 +11,7 @@ $factory->define(App\Inquiry::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'phone_number' => $faker->phoneNumber,
         'product_type' => $product_types[$rand_key],
-        'content' => str_repeat('a', 2000),
+        'content' => $faker->realText($maxNbChars = 2000, $indexSize = 2),
+        'created_at' => $faker->dateTime,
     ];
 });
