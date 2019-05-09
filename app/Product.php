@@ -2,19 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Product extends Model
+class Product
 {
-    const NUMBER_OF_TYPES = 16;
-    const PREFIX_PRODUCT_NAME = 'A';
-    const NUMBER_OF_DIGITS = 3;
-
-    public static function getTypes()
+    public static function getTypes($prefix_name, $types_number = 16, $type_digits = 3)
     {
-        foreach(range(1, self::NUMBER_OF_TYPES) as $number)
+        foreach(range(1, $types_number) as $type)
         {
-            $types[] = self::PREFIX_PRODUCT_NAME.str_pad($number, self::NUMBER_OF_DIGITS, '0', STR_PAD_LEFT);
+            $format = "%0{$type_digits}d";
+            $types[] = $prefix_name.sprintf($format, $type);
         }
         return $types;
     }

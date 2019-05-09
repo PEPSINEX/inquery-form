@@ -6,33 +6,46 @@ use Illuminate\Database\Eloquent\Model;
 
 class Inquiry extends Model
 {
-    /**
-     * 問い合わせインスタンスを所有するStaffを取得
-     */
+    // リレーション設定
     public function staff()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'staff_id');
     }
 
-    /**
-     * 問い合わせインスタンスに関連する返答を取得
-     */
-    public function answer()
+    public function answers()
     {
         return $this->hasMany('App\Answer');
     }
 
-    /**
-     * 問い合わせ日時取得時のフォーマットを定義
-     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
+    // 複数代入する属性
+    protected $fillable = [
+        'name',
+        'email',
+        'phone_number',
+        'product_type',
+        'content',
+        'status',
+        'staff_id',
+    ];
+
+    // 問い合わせ作成日時取得時のフォーマットを定義
     public function getCreatedAtAttribute($value)
     {
         return date('Y年m月d日 H時i分', strtotime($value));
     }
 
-    /**
-     * 対応状況のフォーマットを定義
-     */
+    // 問い合わせ更新日時取得時のフォーマットを定義
+    public function getUpdatedAtAttribute($value)
+    {
+        return date('Y年m月d日 H時i分', strtotime($value));
+    }
+
+    // 対応状況のフォーマットを定義
     public function getStatusAttribute($value)
     {
         switch($value)
@@ -49,28 +62,15 @@ class Inquiry extends Model
         }
     }
 
-    /**
-     * 問い合わせ内容の先頭100文字を取得
-     */
-    public function mbSubstr($column, $number)
+    // 問い合わせ内容の先頭から{$number}文字を取得
+    public function mbSubstrContent($number)
     {
-        return mb_substr($this->$column, 0, $number, 'utf-8').'.....';
+        $content = $this->content;
+        
+        if (mb_strlen($content) > 100) {
+            return mb_substr($this->content, 0, $number, 'utf-8').'...';
+        }else{
+            return $this->content;
+        }
     }
-
-    /**
-     * 問い合わせ日時で並べ替え
-     */
-    public function scopeSortCreatedAt($query, $asc_or_desc)
-    {
-        return $query->orderBy('created_at', $asc_or_desc);
-    }
-
-    /**
-     * 指定したカラムと値でデータを取得
-     */
-    public function scopeFindByColumnValue($query, $column, $value)
-    {
-        return $query->where($column, $value);
-    }
-
 }

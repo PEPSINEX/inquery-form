@@ -32,4 +32,13 @@ class StaffController extends Controller
 
         return redirect()->action('StaffController@index');
     }
+
+    public function show(User $staff)
+    {
+        return view('inquiries.show', [
+            'inquiry'   => $inquiry,
+            'answers'   => $inquiry->answers,
+            'comments'   => $inquiry->comments,
+        ]);
+    }
 }

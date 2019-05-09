@@ -10,40 +10,48 @@ class Answer extends Model
 {
     use Notifiable;
 
-    /**
-     * この問い合わせを所有するStaffを取得
-     */
+    // リレーション設定
     public function staff()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'staff_id');
     }
 
-    /**
-     * この問い合わせを所有するStaffを取得
-     */
     public function inquiry()
     {
         return $this->belongsTo('App\Inquiry');
     }
 
-    /**
-     * メールチャンネルに対する通知をルートする
-     *
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @return string
-     */
-    public function routeNotificationForMail($notification)
+    // 複数代入する属性の制限
+    protected $fillable = [
+        'content',
+        'inquiry_id',
+        'staff_id',
+    ];
+
+    // 問い合わせ作成日時取得時のフォーマットを定義
+    public function getCreatedAtAttribute($value)
     {
-        return $this->inquiry->email;
+        return date('Y年m月d日 H時i分', strtotime($value));
     }
 
-    # お問い合わせ返信メールを送信
-    public static function boot()
-    {
-        parent::boot();
+    // /**
+    //  * メールチャンネルに対する通知をルートする
+    //  *
+    //  * @param  \Illuminate\Notifications\Notification  $notification
+    //  * @return string
+    //  */
+    // public function routeNotificationForMail($notification)
+    // {
+    //     return $this->inquiry->email;
+    // }
 
-        self::created(function($answer){
-            $answer->notify(new AnswerToInquiry($answer));
-        });
-    }
+    // // お問い合わせ返信メールを送信
+    // public static function boot()
+    // {
+    //     parent::boot();
+
+    //     self::created(function($answer){
+    //         $answer->notify(new AnswerToInquiry($answer));
+    //     });
+    // }
 }

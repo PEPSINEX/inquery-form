@@ -40,8 +40,6 @@ class AnswerToInquiry extends Notification
      */
     public function toMail($notifiable)
     {
-        logger($notifiable->staff->email);
-        logger($notifiable->inquiry->email);
         return (new MailMessage)
                     ->from($notifiable->staff->email)
                     ->subject('問い合わせのご返信')

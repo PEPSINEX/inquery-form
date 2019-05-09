@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Answer;
 use App\Inquiry;
-use Illuminate\Http\Request;
-use Validator;  // validationに使用
 use Illuminate\Support\Facades\Mail;  // メール送信機能
 use Illuminate\Support\Facades\Auth;  // ログインユーザー取得
+use App\Http\Requests\StoreAnswer; // バリデーション後のフォームリクエスト
 
 class AnswerController extends Controller
 {
@@ -23,25 +22,17 @@ class AnswerController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreAnswer $request)
     {
-        Validator::make($request->all(), [
-            'content' => ['required']
-        ])->validate();
+        $validated = $request->validated()['answers'];
+        $validated['staff_id'] = Auth::user()->id;
 
-        $answer = new Answer;
-        $answer->content = $request->content;
-        $answer->staff_id = Auth::user()->id;
-        $answer->inquiry_id = $request->inquiry_id;
-        $answer->save();
+        $answer = Answer::create($validated);
+        Inquiry::where('id', $answer->inquiry_id)->update(['status' => '10', 'staff_id' => $answer->staff_id]);
 
-        Inquiry::where('id', $request->inquiry_id)->update(['status' => '10', 'staff_id' => Auth::user()->id]);
-
-        return redirect()->action('InquiryController@index');
+        return redirect()->route('inquiries.show', ['id' => $answer->inquiry_id]);
     }
 
     /**
@@ -69,11 +60,10 @@ class AnswerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Answer $answer)
+    public function update(StoreAnswer $request, Answer $answer)
     {
         //
     }
